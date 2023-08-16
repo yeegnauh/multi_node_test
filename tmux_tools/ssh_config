@@ -1,0 +1,9 @@
+Host hy-jump-control
+    HostName jump01.sz.sensetime.com
+    User huangye
+    Port 22
+    PubkeyAcceptedAlgorithms +ssh-rsa
+    HostkeyAlgorithms +ssh-rsa
+    ControlMaster auto
+    ControlPath ~/.ssh/jump_socket/%r@%h:%p
+    ControlPersist yes

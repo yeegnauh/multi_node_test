@@ -1,0 +1,8 @@
+#!/usr/bin/expect
+
+set target [lindex $argv 0];
+
+spawn ssh hy-jump-control
+expect "Opt>"
+send "$target \r"
+interact

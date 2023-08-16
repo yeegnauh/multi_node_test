@@ -1,0 +1,44 @@
+#!/bin/bash
+
+BASEDIR=$(dirname "$0")
+
+function _JUMP_node_key {
+    sec3=$(echo "$1" | awk -F. '{print $3}')
+    sec4=$(echo "$1" | awk -F. '{print $4}')
+    echo "${sec3}-${sec4}"
+}
+
+function _JUMP_node_keys {
+    cat $1 | while read line || [[ -n $line ]];
+    do
+        _JUMP_node_key $line
+    done
+}
+
+function _JUMP_select_nodes {
+#    cat $1 | fzf -m --reverse
+    cat $1
+}
+
+function _JUMP_connect_nodes {
+    while read line || [[ -n $line ]]; do
+        if [ "$line" != "" ]; then
+            tmux new-window -n `_JUMP_node_key $line` $BASEDIR/jump $line
+        fi
+    done < $1
+}
+
+if [ "$(which expect)" == "" ]; then
+    echo "expect not found"
+    exit 1
+fi
+
+#if [ "$(which fzf)" == "" ]; then
+#    echo "fzf not found"
+#    exit 1
+#fi
+
+nodes="`_JUMP_select_nodes $1`"
+_JUMP_connect_nodes <(echo "$nodes")
+NODEKEYS=`_JUMP_node_keys <(echo "$nodes")`
+env -i HOME=$BASEDIR/jump_control_home NODEKEYS="$NODEKEYS" zsh
