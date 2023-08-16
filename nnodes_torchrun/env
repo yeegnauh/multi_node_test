@@ -1,0 +1,4 @@
+source /mnt/cache/share/platform/env/pt1.13v3
+export NCCL_DEBUG=INFO #打开nccl debug
+export RANK=0
+export NCCL_NET_GDR_LEVEL=LOC #关闭GDR
