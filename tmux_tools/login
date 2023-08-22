@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+set user USERNAME
+set password PASSWDxxxx
+set timeout -1
+set target [lindex $argv 0];
+
+spawn ssh $user@$target
+expect "*password:*"
+send "$password\r"
+interact
